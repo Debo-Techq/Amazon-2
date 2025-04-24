@@ -1,20 +1,20 @@
+'use client'
+
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StarIcon } from '@heroicons/react/24/outline';
-import Currency from 'react-currency-formatter';
 
 function Product({ id, title, price, description, category, image}) {
 
-    // const MAX_RATING = 5;
-    // const MIN_RATING = 1;
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      });
+            
+      const rating = useMemo(() => Math.floor(Math.random() * 5) + 1, []);
 
-    // const [rating] = useState(
-    //     Math.floor(Math.random() * (MAX_RATING - MIN_RATING + 1)) + MIN_RATING
-
-    const rating = Math.floor(Math.random() * 5) + 1;
-     
-    const {hasPrime} = useState(Math.random() < 0.5);
-
+      const [hasPrime] = useState(() => Math.random() < 0.5);
+    
   return (
     <div className="relative flex flex-col m-5 bg-white z-30 p-10">
       <p className="absolute top-2 right-2 text-xs italic text-gray-400">{category}</p>
@@ -34,7 +34,7 @@ function Product({ id, title, price, description, category, image}) {
        <p className="text-xs my-2 line-clamp-2" >{description}</p>
 
        <div className="mb-5">
-         <Currency quantity={price} currency="GBP" />
+         <span>{formatter.format(price)}</span>
        </div>
 
        {hasPrime && (
